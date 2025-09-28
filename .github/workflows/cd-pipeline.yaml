@@ -1,0 +1,23 @@
+name: cd-pipeline
+on:
+    workflow_dispatch:
+        inputs: 
+            tag:
+                description: "tag for docker image"
+                required: true
+jobs: 
+    kubernetes-deployment:
+        runs-on: self-hosted
+        steps:
+          - name: checkout-code
+            uses: actions/checkout@v4
+          - name: start minikube
+            id: minikube
+            uses: medyagh/setup-minikube@latest
+          - name: update-yaml
+            run: | 
+                sed -i "s|image: guruhbk/expertinterview:.*|image: guruhbk/expertinterview:${{github.event.inputs.tag}}|g"
+          - name: kubectl-deploy
+            run: |
+                kubectl apply -f ./deployment/deployment.yaml
+    

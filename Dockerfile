@@ -8,7 +8,9 @@ EXPOSE  8080
 COPY . .
 
 #node is built-in none root user. added two run command in one line to avoid multiple layers which will increase the size of the images. 
-RUN npm install && chown -R node:node /myapp
-
+RUN addgroup -g 1001 -S appgroup && \
+ adduser -u 1001 -S appuser -G appgroup \
+&& npm install && chown -R appuser:appgroup /myapp
+USER appuser
 
 CMD [ "npm","start" ]
