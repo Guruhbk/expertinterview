@@ -11,9 +11,6 @@ jobs:
         steps:
           - name: checkout-code
             uses: actions/checkout@v4
-          - name: start minikube
-            id: minikube
-            uses: medyagh/setup-minikube@latest
           - name: update-yaml
             run: | 
                 sed -i "s|image: guruhbk/expertinterview:.*|image: guruhbk/expertinterview:${{github.event.inputs.tag}}|g"
